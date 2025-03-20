@@ -7,7 +7,15 @@ void main() {
     ),
     home: Scaffold(
       appBar: AppBar(title: Text("Meu app")),
-      body: Text("Apenas começando..."),
+      body: Center(
+        child: Column(
+          children: [
+            Text("Apenas começando..."),
+            Text("No meio..."),
+            Text("Terminando...")
+          ],
+        ),
+      ),
       bottomNavigationBar: Text("Botão 1"),
     )
   );
