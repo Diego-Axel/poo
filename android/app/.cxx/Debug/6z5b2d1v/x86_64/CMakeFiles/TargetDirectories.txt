@@ -1,0 +1,2 @@
+C:/Users/diego/OneDrive/Documentos/Projetos_Faculdade/poo/android/app/.cxx/Debug/6z5b2d1v/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/diego/OneDrive/Documentos/Projetos_Faculdade/poo/android/app/.cxx/Debug/6z5b2d1v/x86_64/CMakeFiles/rebuild_cache.dir
