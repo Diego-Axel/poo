@@ -39,27 +39,18 @@ void main() {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Text(
-              "Botão 1",
-              style: TextStyle(
-                fontWeight: FontWeight.bold, 
-                fontSize: 16
-              ),
+            ElevatedButton(
+              onPressed: () {},
+              child: Text("Botão 1"),
             ),
-            Text(
-              "Botão 2",
-              style: TextStyle(
-                fontWeight: FontWeight.bold, 
-                fontSize: 16
-              ),
+            ElevatedButton(
+              onPressed: () {},
+              child: Text("Botão 2"),
             ),
-            Text(
-              "Botão 3",
-              style: TextStyle(
-                fontWeight: FontWeight.bold, 
-                fontSize: 16
-              ),
-            ),
+            ElevatedButton(
+              onPressed: () {},
+              child: Text("Botão 3"),
+            )
           ],
         ),
       )
