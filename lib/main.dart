@@ -19,12 +19,7 @@ void main() {
                  ),
             ),
             SizedBox(height: 10), // Espaço entre os elementos
-            Image.network(
-              'https://i.postimg.cc/9f6CqQxW/paia.jpg',
-              width: 150,
-              height: 150,
-              fit: BoxFit.cover,
-            ),
+            _buildImageWithPlaceholder('https://i.postimg.cc/9f6CqQxW/paia.jpg'),
             Text(
               "No meio...",
               style: TextStyle(
@@ -33,12 +28,7 @@ void main() {
                  ),
             ),
             SizedBox(height: 10), // Espaço entre os elementos
-            Image.network(
-              'https://i.postimg.cc/nLwHk10G/Captura-de-tela-2024-10-25-141130.png',
-              width: 150,
-              height: 150,
-              fit: BoxFit.cover,
-            ),
+            _buildImageWithPlaceholder('https://i.postimg.cc/nLwHk10G/Captura-de-tela-2024-10-25-141130.png'),
             Text(
               "Terminando...",
               style: TextStyle(
@@ -79,4 +69,15 @@ void main() {
     ),
   );
   runApp(app);
+}
+
+Widget _buildImageWithPlaceholder(String imageUrl) {
+  return FadeInImage.assetNetwork(
+    placeholder: 'assets/loading.png', // Precisa de um asset local de loading
+    image: imageUrl,
+    width: 150,
+    height: 150,
+    fit: BoxFit.cover,
+    fadeInDuration: Duration(milliseconds: 500),
+  );
 }
