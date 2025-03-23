@@ -4,7 +4,7 @@ void main() {
   MaterialApp app = MaterialApp(
     theme: ThemeData(
       primarySwatch: Colors.purple,
-      fontFamily: "Roboto",
+      fontFamily: 'Roboto', // Define a fonte padrão do app
     ),
     home: Scaffold(
       appBar: AppBar(title: Text("Meu app")),
@@ -16,7 +16,14 @@ void main() {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                  fontSize: 18
-                ),
+                 ),
+            ),
+            SizedBox(height: 10), // Espaço entre os elementos
+            Image.network(
+              'https://i.postimg.cc/9f6CqQxW/paia.jpg',
+              width: 150,
+              height: 150,
+              fit: BoxFit.cover,
             ),
             Text(
               "No meio...",
@@ -25,13 +32,20 @@ void main() {
                  fontSize: 18
                  ),
             ),
+            SizedBox(height: 10), // Espaço entre os elementos
+            Image.network(
+              'https://i.postimg.cc/nLwHk10G/Captura-de-tela-2024-10-25-141130.png',
+              width: 150,
+              height: 150,
+              fit: BoxFit.cover,
+            ),
             Text(
               "Terminando...",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                  fontSize: 18
                  ),
-            )
+            ),
           ],
         ),
       ),
