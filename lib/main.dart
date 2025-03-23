@@ -12,25 +12,16 @@ void main() {
           children: [
             Text(
               "Apenas começando...",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                 fontSize: 18
-                ),
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
             Text(
               "No meio...",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                 fontSize: 18
-                ),
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
             Text(
               "Terminando...",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                 fontSize: 18
-                ),
-              ) 
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            )
           ],
         ),
       ),
@@ -41,20 +32,27 @@ void main() {
           children: [
             ElevatedButton(
               onPressed: () {},
-              child: Text("Botão 1"),
+              child: Icon(Icons.phone),
             ),
             ElevatedButton(
               onPressed: () {},
-              child: Text("Botão 2"),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.star),
+                  SizedBox(width: 5),
+                  Text("Botão 2"),
+                ],
+              ),
             ),
             ElevatedButton(
               onPressed: () {},
-              child: Text("Botão 3"),
-            )
+              child: Icon(Icons.phone_android),
+            ),
           ],
         ),
-      )
-    )
+      ),
+    ),
   );
   runApp(app);
 }
