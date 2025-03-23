@@ -4,6 +4,7 @@ void main() {
   MaterialApp app = MaterialApp(
     theme: ThemeData(
       primarySwatch: Colors.purple,
+      fontFamily: "Roboto",
     ),
     home: Scaffold(
       appBar: AppBar(title: Text("Meu app")),
@@ -12,15 +13,24 @@ void main() {
           children: [
             Text(
               "Apenas começando...",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                 fontSize: 18
+                ),
             ),
             Text(
               "No meio...",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                 fontSize: 18
+                 ),
             ),
             Text(
               "Terminando...",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                 fontSize: 18
+                 ),
             )
           ],
         ),
