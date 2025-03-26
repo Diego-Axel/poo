@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(
+  MaterialApp app = MaterialApp(
     theme: ThemeData(
       primarySwatch: Colors.green,
       fontFamily: 'Roboto',
@@ -149,7 +149,8 @@ void main() {
         ),
       ),
     ),
-  ));
+  );
+  runApp(app);
 }
 
 Widget _buildImageWithPlaceholder(String imageUrl) {
