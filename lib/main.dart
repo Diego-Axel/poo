@@ -1,5 +1,19 @@
 import 'package:flutter/material.dart';
 
+
+// Funções / Classes
+
+Widget _buildImageWithPlaceholder(String imageUrl) {
+  return FadeInImage.assetNetwork(
+    placeholder: 'assets/ampulheta.gif', // Precisa de um asset local de loading se você quiser
+    image: imageUrl,
+    width: 150,
+    height: 150,
+    fadeInDuration: Duration(milliseconds: 500),
+  );
+}
+
+
 void main() {
   MaterialApp app = MaterialApp(
     theme: ThemeData(
@@ -151,14 +165,4 @@ void main() {
     ),
   );
   runApp(app);
-}
-
-Widget _buildImageWithPlaceholder(String imageUrl) {
-  return FadeInImage.assetNetwork(
-    placeholder: 'assets/ampulheta.gif', // Precisa de um asset local de loading se você quiser
-    image: imageUrl,
-    width: 150,
-    height: 150,
-    fadeInDuration: Duration(milliseconds: 500),
-  );
 }
