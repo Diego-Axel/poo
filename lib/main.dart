@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // Funções / Classes
 
-Widget _buildImageWithPlaceholder(String imageUrl) {
+Widget _placeHolderBuild(String imageUrl) {
   return FadeInImage.assetNetwork(
     placeholder: 'assets/ampulheta.gif', // Precisa de um asset local de loading se você quiser
     image: imageUrl,
@@ -29,7 +29,7 @@ void main() {
             child: Column(
               children: [
                 SizedBox(height: 10),
-                _buildImageWithPlaceholder(
+                _placeHolderBuild(
                   'https://i.postimg.cc/WztMvG06/cerveja-Bar.jpg',
                 ),
                 SizedBox(height: 10),
