@@ -1,16 +1,75 @@
 import 'package:flutter/material.dart';
 
-
 // Funções / Classes
+
 
 Widget _placeHolderBuild(String imageUrl) {
   return FadeInImage.assetNetwork(
-    placeholder: 'assets/ampulheta.gif', // Precisa de um asset local de loading se você quiser
+    placeholder: 'assets/ampulheta.gif',
     image: imageUrl,
     width: 150,
     height: 150,
     fadeInDuration: Duration(milliseconds: 500),
   );
+}
+
+
+class CaixaBotoes extends StatelessWidget {
+  CaixaBotoes();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.liquor, color: Colors.white),
+                SizedBox(width: 4),
+                Text("Botão 1", style: TextStyle(color: Colors.white)),
+              ],
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.liquor, color: Colors.white),
+                SizedBox(width: 4),
+                Text("Botão 2", style: TextStyle(color: Colors.white)),
+              ],
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.liquor, color: Colors.white),
+                SizedBox(width: 4),
+                Text("Botão 3", style: TextStyle(color: Colors.white)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 
@@ -112,56 +171,7 @@ void main() {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green, // Define a cor do botão
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.liquor, color: Colors.white), // Ícone branco para contraste
-                  SizedBox(width: 4),
-                  Text("Botão 1", style: TextStyle(color: Colors.white)), // Texto branco
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.liquor, color: Colors.white),
-                  SizedBox(width: 4),
-                  Text("Botão 2", style: TextStyle(color: Colors.white)),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.liquor, color: Colors.white),
-                  SizedBox(width: 4),
-                  Text("Botão 3", style: TextStyle(color: Colors.white)),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: CaixaBotoes(),
     ),
   );
   runApp(app);
