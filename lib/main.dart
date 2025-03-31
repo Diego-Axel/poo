@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 // Funções / Classes
 
-
 Widget _placeHolderBuild(String imageUrl) {
   return FadeInImage.assetNetwork(
     placeholder: 'assets/ampulheta.gif',
@@ -16,58 +15,28 @@ Widget _placeHolderBuild(String imageUrl) {
 
 class CaixaBotoes extends StatelessWidget {
   CaixaBotoes();
+  void botaoFoiTocado(int index) {
+    print("Tocaram no item da barra de navegação $index");
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.liquor, color: Colors.white),
-                SizedBox(width: 4),
-                Text("Botão 1", style: TextStyle(color: Colors.white)),
-              ],
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.liquor, color: Colors.white),
-                SizedBox(width: 4),
-                Text("Botão 2", style: TextStyle(color: Colors.white)),
-              ],
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.liquor, color: Colors.white),
-                SizedBox(width: 4),
-                Text("Botão 3", style: TextStyle(color: Colors.white)),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return BottomNavigationBar(
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Início',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'Buscar',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Perfil',
+        ),
+      ],
+      onTap: (index) => botaoFoiTocado(index),
     );
   }
 }
