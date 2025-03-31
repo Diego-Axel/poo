@@ -15,13 +15,14 @@ Widget _placeHolderBuild(String imageUrl) {
 
 class CaixaBotoes extends StatelessWidget {
   CaixaBotoes();
+
   void botaoFoiTocado(int index) {
     print("Tocaram no item da barra de navegação $index");
   }
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
+    return BottomNavigationBar(onTap: botaoFoiTocado,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
@@ -36,7 +37,6 @@ class CaixaBotoes extends StatelessWidget {
           label: 'Perfil',
         ),
       ],
-      onTap: (index) => botaoFoiTocado(index),
     );
   }
 }
