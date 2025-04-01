@@ -126,17 +126,27 @@ class CaixaBotoes extends StatelessWidget {
 }
 
 
+class MyApp extends StatelessWidget {
+  MyApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        fontFamily: 'Roboto',
+      ),
+      home: Scaffold(
+        appBar: AppBar(title: Text("Cervejas Bar"), backgroundColor: Colors.green),
+        body: CaixaBody(),
+        bottomNavigationBar: CaixaBotoes(),
+      ),
+    );
+  }
+}
+
+
 void main() {
-  MaterialApp app = MaterialApp(
-    theme: ThemeData(
-      primarySwatch: Colors.green,
-      fontFamily: 'Roboto',
-    ),
-    home: Scaffold(
-      appBar: AppBar(title: Text("Cervejas Bar"), backgroundColor: Colors.green),
-      body: CaixaBody(),
-      bottomNavigationBar: CaixaBotoes(),
-    ),
-  );
-  runApp(app);
+  MyApp app = MyApp();
+  runApp(app); // ou  runApp(MyApp());
 }
