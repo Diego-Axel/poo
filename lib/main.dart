@@ -25,15 +25,15 @@ class CaixaBotoes extends StatelessWidget {
     return BottomNavigationBar(onTap: botaoFoiTocado,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Icon(Icons.home, color: Colors.green),
           label: 'Início',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search),
+          icon: Icon(Icons.search, color: Colors.green),
           label: 'Buscar',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
+          icon: Icon(Icons.person, color: Colors.green),
           label: 'Perfil',
         ),
       ],
