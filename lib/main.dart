@@ -148,5 +148,5 @@ class MyApp extends StatelessWidget {
 
 void main() {
   MyApp app = MyApp();
-  runApp(app); // ou  runApp(MyApp());
+  runApp(app); // ou runApp(MyApp());
 }
