@@ -12,7 +12,6 @@ Widget _placeHolderBuild(String imageUrl) {
   );
 }
 
-
 class CaixaBody extends StatelessWidget {
   CaixaBody();
 
@@ -96,7 +95,6 @@ class CaixaBody extends StatelessWidget {
   }
 }
 
-
 class CaixaBotoes extends StatelessWidget {
   CaixaBotoes();
 
@@ -106,7 +104,8 @@ class CaixaBotoes extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(onTap: botaoFoiTocado,
+    return BottomNavigationBar(
+      onTap: botaoFoiTocado,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home, color: Colors.green),
@@ -125,6 +124,13 @@ class CaixaBotoes extends StatelessWidget {
   }
 }
 
+class CaixaAppBar extends AppBar {
+  CaixaAppBar()
+      : super(
+          title: Text("Cervejas Bar"),
+          backgroundColor: Colors.green,
+        );
+}
 
 class MyApp extends StatelessWidget {
   MyApp();
@@ -137,7 +143,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Roboto',
       ),
       home: Scaffold(
-        appBar: AppBar(title: Text("Cervejas Bar"), backgroundColor: Colors.green),
+        appBar: CaixaAppBar(),
         body: CaixaBody(),
         bottomNavigationBar: CaixaBotoes(),
       ),
@@ -145,8 +151,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 void main() {
   MyApp app = MyApp();
-  runApp(app); // ou runApp(MyApp());
+  runApp(app); // ou runApp(MyApp())
 }
