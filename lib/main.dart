@@ -14,6 +14,30 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: const Text("Dicas"),
+          actions: [
+            PopupMenuButton<String>(
+              onSelected: (String value) {
+                print("Selecionou a cor: $value");
+                // Futuramente, trocar tema aqui
+              },
+              itemBuilder: (BuildContext context) {
+                return [
+                  const PopupMenuItem<String>(
+                    value: "Roxo",
+                    child: Text("Roxo"),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: "Verde",
+                    child: Text("Verde"),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: "Laranja",
+                    child: Text("Laranja"),
+                  ),
+                ];
+              },
+            ),
+          ],
         ),
         body: DataBodyWidget(objects: [
           "La Fin Du Monde - Bock - 65 ibu",
@@ -42,7 +66,7 @@ class NewNavBar extends StatelessWidget {
   BottomNavigationBarItem construirItem(IconData icone) {
     return BottomNavigationBarItem(
       icon: Icon(icone),
-      label: "", // por enquanto, sem label conforme solicitado
+      label: "",
     );
   }
 
