@@ -20,7 +20,11 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             title: const Text("Dicas"),
           ),
-          body: DataBodyWidget(),
+          body: DataBodyWidget(objects: [
+            "La Fin Du Monde - Bock - 65 ibu",
+            "Sapporo Premiume - Sour Ale - 54 ibu",
+            "Duvel - Pilsner - 82 ibu"
+          ],),
           bottomNavigationBar: NewNavBar(),
         ));
   }
@@ -64,25 +68,28 @@ class NewNavBar extends StatelessWidget {
 
 
 class DataBodyWidget extends StatelessWidget {
-  DataBodyWidget();
+
+  List<String> objects;
+
+  DataBodyWidget( {this.objects = const [] });
 
   @override
 
   Widget build(BuildContext context) {
 
-    return Column(children: [
+    List<Expanded> allTheLines = [];
 
-      Expanded(
-        child: Text("La Fin Du Monde - Bock - 65 ibu"),
-      ),
+    for (var obj in objects){
 
-      Expanded(
-        child: Text("Sapporo Premiume - Sour Ale - 54 ibu"),
-      ),
+      allTheLines.add( 
 
-      Expanded(
-        child: Text("Duvel - Pilsner - 82 ibu"),
-      )
-    ]);
+        Expanded(                
+
+          child: Center(child: Text(obj)),
+
+        )
+      );
+    }
+    return Column(children: allTheLines);
   }
 }
