@@ -12,33 +12,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.deepPurple),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: const Text("Dicas"),
-          actions: [
-            PopupMenuButton<String>(
-              onSelected: (String value) {
-                print("Selecionou a cor: $value");
-                // Futuramente, trocar tema aqui
-              },
-              itemBuilder: (BuildContext context) {
-                return [
-                  const PopupMenuItem<String>(
-                    value: "Roxo",
-                    child: Text("Roxo"),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: "Verde",
-                    child: Text("Verde"),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: "Laranja",
-                    child: Text("Laranja"),
-                  ),
-                ];
-              },
-            ),
-          ],
-        ),
+        appBar: MyAppBar(),
         body: DataBodyWidget(objects: [
           "La Fin Du Monde - Bock - 65 ibu",
           "Sapporo Premiume - Sour Ale - 54 ibu",
@@ -52,6 +26,44 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+// Nova classe para o AppBar
+class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: const Text("Dicas"),
+      actions: [
+        PopupMenuButton<String>(
+          onSelected: (String value) {
+            print("Selecionou a cor: $value");
+            // Trocar tema futuramente
+          },
+          itemBuilder: (BuildContext context) {
+            return const [
+              PopupMenuItem<String>(
+                value: "Roxo",
+                child: Text("Roxo"),
+              ),
+              PopupMenuItem<String>(
+                value: "Verde",
+                child: Text("Verde"),
+              ),
+              PopupMenuItem<String>(
+                value: "Laranja",
+                child: Text("Laranja"),
+              ),
+            ];
+          },
+        ),
+      ],
+    );
+  }
+
+  // Necessário implementar `preferredSize` quando extendemos PreferredSizeWidget
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class NewNavBar extends StatelessWidget {
