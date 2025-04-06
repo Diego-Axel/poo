@@ -68,28 +68,23 @@ class NewNavBar extends StatelessWidget {
 
 
 class DataBodyWidget extends StatelessWidget {
-
   List<String> objects;
+  DataBodyWidget({this.objects = const [] });
 
-  DataBodyWidget( {this.objects = const [] });
+  Expanded processarUmElemento(String obj){
+    return Expanded(                
+          child: Center(child: Text(obj)),
+        );
+  }
+
 
   @override
-
   Widget build(BuildContext context) {
-
-    List<Expanded> allTheLines = [];
-
-    for (var obj in objects){
-
-      allTheLines.add( 
-
-        Expanded(                
-
-          child: Center(child: Text(obj)),
-
+    List<Expanded> allTheLines = objects.map( 
+      (obj) => Expanded(
+        child: Center(child: Text(obj)),
         )
-      );
-    }
+      ).toList();
     return Column(children: allTheLines);
   }
 }
