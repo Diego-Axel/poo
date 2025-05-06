@@ -1,60 +1,147 @@
 import 'package:flutter/material.dart';
 
+var dataObjects = [];
 
-var coffeeObjects = [
-  {"brand": "Illy", "type": "Espresso", "intensity": "Strong"},
-  {"brand": "Nespresso", "type": "Lungo", "intensity": "Medium"},
-  {"brand": "Pilão", "type": "Tradicional", "intensity": "Strong"},
-  {"brand": "Melitta", "type": "Coador", "intensity": "Mild"},
-];
 
 
 void main() {
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Scaffold(
-      appBar: AppBar(title: Text("Tabela Genérica")),
-      body: DataBodyWidget(
-        objects: coffeeObjects,
-        columnNames: ["Marca", "Tipo", "Intensidade"],
-        propertyNames: ["brand", "type", "intensity"],
-      ),
-    ),
-  ));
+
+  MyApp app = MyApp();
+
+  runApp(app);
+
 }
 
 
-class DataBodyWidget extends StatelessWidget {
-  final List<Map<String, dynamic>> objects;
-  final List<String> columnNames;
-  final List<String> propertyNames;
 
-  DataBodyWidget({
-    required this.objects,
-    required this.columnNames,
-    required this.propertyNames,
-  });
+class MyApp extends StatelessWidget {
 
   @override
+
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: DataTable(
-        columns: columnNames
-            .map((name) => DataColumn(
-                    label: Expanded(
-                        child: Text(name,
-                            style: TextStyle(fontStyle: FontStyle.italic)))))
-            .toList(),
-        rows: objects.map((obj) {
-          return DataRow(
-            cells: propertyNames.map((propName) {
-              var cellValue = obj[propName]?.toString() ?? "";
-              return DataCell(Text(cellValue));
-            }).toList(),
-          );
-        }).toList(),
-      ),
-    );
+
+    
+
+    return MaterialApp(
+
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
+
+      debugShowCheckedModeBanner:false,
+
+      home: Scaffold(
+
+        appBar: AppBar( 
+
+          title: const Text("Dicas"),
+
+          ),
+
+        body: DataTableWidget(jsonObjects:dataObjects),
+
+        bottomNavigationBar: NewNavBar(),
+
+      ));
+
   }
+
+}
+
+
+
+class NewNavBar extends StatelessWidget {
+
+  NewNavBar();
+
+
+
+  void buttonTapped(int index) {
+
+    print("Tocaram no botão $index");
+
+  }
+
+
+
+  @override
+
+  Widget build(BuildContext context) {
+
+    return BottomNavigationBar(onTap: buttonTapped, items: const [
+
+      BottomNavigationBarItem(
+
+        label: "Cafés",
+
+        icon: Icon(Icons.coffee_outlined),
+
+      ),
+
+      BottomNavigationBarItem(
+
+          label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
+
+      BottomNavigationBarItem(label: "Nações", icon: Icon(Icons.flag_outlined))
+
+    ]);
+
+  }
+
+}
+
+
+
+class DataTableWidget extends StatelessWidget {
+
+  final List jsonObjects;
+
+  DataTableWidget( {this.jsonObjects = const [] });
+
+
+
+  @override
+
+  Widget build(BuildContext context) {
+
+    
+
+    var columnNames = ["Nome","Estilo","IBU"],
+
+        propertyNames = ["name", "style", "ibu"];
+
+    
+
+    return DataTable(
+
+      columns: columnNames.map( 
+
+                (name) => DataColumn(
+
+                  label: Expanded(
+
+                    child: Text(name, style: TextStyle(fontStyle: FontStyle.italic))
+
+                  )
+
+                )
+
+              ).toList()       
+
+      ,
+
+      rows: jsonObjects.map( 
+
+        (obj) => DataRow(
+
+            cells: propertyNames.map(
+
+              (propName) => DataCell(Text(obj[propName]))
+
+            ).toList()
+
+          )
+
+        ).toList());
+
+  }
+
 }
