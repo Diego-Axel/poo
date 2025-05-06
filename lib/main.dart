@@ -1,89 +1,60 @@
 import 'package:flutter/material.dart';
 
 
-var dataObjects = [
-  {
-    "name": "La Fin Du Monde",
-    "style": "Bock",
-    "ibu": "65"
-  },
-  {
-    "name": "Sapporo Premiume",
-    "style": "Sour Ale",
-    "ibu": "54"
-  },
-  {
-    "name": "Duvel",
-    "style": "Pilsner",
-    "ibu": "82"
-  },
-  {
-    "name": "Heineken",
-    "style": "Lager",
-    "ibu": "23"
-  },
-  {
-    "name": "Guinness",
-    "style": "Stout",
-    "ibu": "45"
-  },
-  {
-    "name": "Budweiser",
-    "style": "Lager",
-    "ibu": "15"
-  },
-  {
-    "name": "Corona",
-    "style": "Pale Lager",
-    "ibu": "20"
-  },
-  {
-    "name": "Stella Artois",
-    "style": "Pilsner",
-    "ibu": "30"
-  },
-  {
-    "name": "Skol",
-    "style": "Pilsen",
-    "ibu": "18"
-  },
-  {
-    "name": "Brahma",
-    "style": "Lager",
-    "ibu": "16"
-  }
+var coffeeObjects = [
+  {"brand": "Illy", "type": "Espresso", "intensity": "Strong"},
+  {"brand": "Nespresso", "type": "Lungo", "intensity": "Medium"},
+  {"brand": "Pilão", "type": "Tradicional", "intensity": "Strong"},
+  {"brand": "Melitta", "type": "Coador", "intensity": "Mild"},
 ];
 
 
 void main() {
   runApp(MaterialApp(
-    theme: ThemeData(primarySwatch: Colors.deepPurple),
     debugShowCheckedModeBanner: false,
     home: Scaffold(
-      appBar: AppBar(title: Text('Lista de Cervejas')),
-      body: MytileWidget(data: dataObjects),
+      appBar: AppBar(title: Text("Tabela Genérica")),
+      body: DataBodyWidget(
+        objects: coffeeObjects,
+        columnNames: ["Marca", "Tipo", "Intensidade"],
+        propertyNames: ["brand", "type", "intensity"],
+      ),
     ),
   ));
 }
 
 
-class MytileWidget extends StatelessWidget {
-  final List<Map<String, String>> data;
+class DataBodyWidget extends StatelessWidget {
+  final List<Map<String, dynamic>> objects;
+  final List<String> columnNames;
+  final List<String> propertyNames;
 
-  MytileWidget({required this.data});
+  DataBodyWidget({
+    required this.objects,
+    required this.columnNames,
+    required this.propertyNames,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (context, index) {
-        var item = data[index];
-        return ListTile(
-          leading: Icon(Icons.local_drink_outlined),
-          title: Text(item["name"] ?? "Sem nome"),
-          subtitle: Text("Estilo: ${item["style"]} | IBU: ${item["ibu"]}"),
-        );
-      },
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: DataTable(
+        columns: columnNames
+            .map((name) => DataColumn(
+                    label: Expanded(
+                        child: Text(name,
+                            style: TextStyle(fontStyle: FontStyle.italic)))))
+            .toList(),
+        rows: objects.map((obj) {
+          return DataRow(
+            cells: propertyNames.map((propName) {
+              var cellValue = obj[propName]?.toString() ?? "";
+              return DataCell(Text(cellValue));
+            }).toList(),
+          );
+        }).toList(),
+      ),
     );
   }
 }
