@@ -1,142 +1,180 @@
 import 'package:flutter/material.dart';
 
+
+var dataObjects = [
+
+    {
+
+      "name": "La Fin Du Monde",
+
+      "style": "Bock",
+
+      "ibu": "65"
+
+    },
+
+    {
+
+      "name": "Sapporo Premiume",
+
+      "style": "Sour Ale",
+
+      "ibu": "54"
+
+    },
+
+    {
+
+      "name": "Duvel", 
+
+      "style": "Pilsner", 
+
+      "ibu": "82"
+
+    }
+
+  ];
+
+
+
 void main() {
-  runApp(MyApp());
+
+  MyApp app = MyApp();
+
+  runApp(app);
+
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
 
-class _MyAppState extends State<MyApp> {
-  MaterialColor _primaryColor = Colors.deepPurple;
 
-  void _changeTheme(String colorName) {
-    setState(() {
-      switch (colorName) {
-        case "Verde":
-          _primaryColor = Colors.green;
-          break;
-        case "Laranja":
-          _primaryColor = Colors.orange;
-          break;
-        case "Roxo":
-        default:
-          _primaryColor = Colors.deepPurple;
-      }
-    });
-  }
+class MyApp extends StatelessWidget {
 
   @override
+
   Widget build(BuildContext context) {
+
+    
+
     return MaterialApp(
-      theme: ThemeData(primarySwatch: _primaryColor),
-      debugShowCheckedModeBanner: false,
+
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
+
+      debugShowCheckedModeBanner:false,
+
       home: Scaffold(
-        appBar: MyAppBar(onColorSelected: _changeTheme),
-        body: DataBodyWidget(objects: [
-          "La Fin Du Monde - Bock - 65 ibu",
-          "Sapporo Premiume - Sour Ale - 54 ibu",
-          "Duvel - Pilsner - 82 ibu"
-        ]),
-        bottomNavigationBar: NewNavBar(icons: const [
-          Icons.coffee_outlined,
-          Icons.local_drink_outlined,
-          Icons.flag_outlined
-        ]),
-      ),
-    );
-  }
-}
 
-// AppBar com callback
-class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final void Function(String)? onColorSelected;
+        appBar: AppBar( 
 
-  const MyAppBar({this.onColorSelected});
+          title: const Text("Dicas"),
 
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      title: const Text("Dicas"),
-      actions: [
-        PopupMenuButton<String>(
-          onSelected: (String value) {
-            print("Selecionou a cor: $value");
-            if (onColorSelected != null) {
-              onColorSelected!(value);
-            }
-          },
-          itemBuilder: (BuildContext context) {
-            return const [
-              PopupMenuItem<String>(
-                value: "Roxo",
-                child: Text("Roxo"),
-              ),
-              PopupMenuItem<String>(
-                value: "Verde",
-                child: Text("Verde"),
-              ),
-              PopupMenuItem<String>(
-                value: "Laranja",
-                child: Text("Laranja"),
-              ),
-            ];
-          },
-        ),
-      ],
-    );
+          ),
+
+        body: DataBodyWidget(objects:dataObjects),
+
+        bottomNavigationBar: NewNavBar(),
+
+      ));
+
   }
 
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
-// As demais classes permanecem idênticas
+
+
+
+
 class NewNavBar extends StatelessWidget {
-  final List<IconData> icons;
 
-  NewNavBar({this.icons = const []});
+  NewNavBar();
+
+
 
   void botaoFoiTocado(int index) {
+
     print("Tocaram no botão $index");
+
   }
 
-  BottomNavigationBarItem construirItem(IconData icone) {
-    return BottomNavigationBarItem(
-      icon: Icon(icone),
-      label: "",
-    );
-  }
+
 
   @override
-  Widget build(BuildContext context) {
-    List<BottomNavigationBarItem> items =
-        icons.map((icone) => construirItem(icone)).toList();
 
-    return BottomNavigationBar(
-      onTap: botaoFoiTocado,
-      items: items,
-    );
+  Widget build(BuildContext context) {
+
+    return BottomNavigationBar(onTap: botaoFoiTocado, items: const [
+
+      BottomNavigationBarItem(
+
+        label: "Cafés",
+
+        icon: Icon(Icons.coffee_outlined),
+
+      ),
+
+      BottomNavigationBarItem(
+
+          label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
+
+      BottomNavigationBarItem(label: "Nações", icon: Icon(Icons.flag_outlined))
+
+    ]);
+
   }
+
 }
 
+
+
 class DataBodyWidget extends StatelessWidget {
-  List<String> objects;
 
-  DataBodyWidget({this.objects = const []});
+  List objects;
 
-  Expanded processarUmElemento(String obj) {
-    return Expanded(
-      child: Center(child: Text(obj)),
-    );
-  }
+  DataBodyWidget( {this.objects = const [] });
+
+
 
   @override
+
   Widget build(BuildContext context) {
-    List<Expanded> allTheLines =
-        objects.map((obj) => processarUmElemento(obj)).toList();
-    return Column(children: allTheLines);
+
+    var columnNames = ["Nome","Estilo","IBU"],
+
+        propertyNames = ["name", "style", "ibu"];
+
+    
+
+    return DataTable(
+
+      columns: columnNames.map( 
+
+                (name) => DataColumn(
+
+                  label: Expanded(
+
+                    child: Text(name, style: TextStyle(fontStyle: FontStyle.italic))
+
+                  )
+
+                )
+
+              ).toList()       
+
+      ,
+
+      rows: objects.map( 
+
+        (obj) => DataRow(
+
+            cells: propertyNames.map(
+
+              (propName) => DataCell(Text(obj[propName]))
+
+            ).toList()
+
+          )
+
+        ).toList());
+
   }
+
 }
