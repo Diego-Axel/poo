@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+
 
 var dataObjects = [];
 
@@ -47,18 +49,9 @@ class MyApp extends StatelessWidget {
 }
 
 
-
-class NewNavBar extends StatelessWidget {
+class NewNavBar extends HookWidget {
 
   NewNavBar();
-
-
-
-  void buttonTapped(int index) {
-
-    print("Tocaram no botão $index");
-
-  }
 
 
 
@@ -66,28 +59,39 @@ class NewNavBar extends StatelessWidget {
 
   Widget build(BuildContext context) {
 
-    return BottomNavigationBar(onTap: buttonTapped, items: const [
+    var state = useState(1);
 
-      BottomNavigationBarItem(
+    return BottomNavigationBar(
 
-        label: "Cafés",
+      onTap: (index){
 
-        icon: Icon(Icons.coffee_outlined),
+        state.value = index;
 
-      ),
+      }, 
 
-      BottomNavigationBarItem(
+      currentIndex: state.value,
 
-          label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
+      items: const [
 
-      BottomNavigationBarItem(label: "Nações", icon: Icon(Icons.flag_outlined))
+        BottomNavigationBarItem(
 
-    ]);
+          label: "Cafés",
+
+          icon: Icon(Icons.coffee_outlined),
+
+        ),
+
+        BottomNavigationBarItem(
+
+            label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
+
+        BottomNavigationBarItem(label: "Nações", icon: Icon(Icons.flag_outlined))
+
+      ]);
 
   }
 
 }
-
 
 
 class DataTableWidget extends StatelessWidget {
