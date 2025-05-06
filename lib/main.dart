@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 var dataObjects = [
   {
     "name": "La Fin Du Monde",
@@ -53,73 +54,36 @@ var dataObjects = [
   }
 ];
 
+
 void main() {
-  MyApp app = MyApp();
-  runApp(app);
+  runApp(MaterialApp(
+    theme: ThemeData(primarySwatch: Colors.deepPurple),
+    debugShowCheckedModeBanner: false,
+    home: Scaffold(
+      appBar: AppBar(title: Text('Lista de Cervejas')),
+      body: MytileWidget(data: dataObjects),
+    ),
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        theme: ThemeData(primarySwatch: Colors.deepPurple),
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          appBar: AppBar(
-            title: const Text("Dicas"),
-          ),
-          body: DataBodyWidget(objects: dataObjects),
-          bottomNavigationBar: NewNavBar(),
-        ));
-  }
-}
 
-class NewNavBar extends StatelessWidget {
-  NewNavBar();
+class MytileWidget extends StatelessWidget {
+  final List<Map<String, String>> data;
 
-  void botaoFoiTocado(int index) {
-    print("Tocaram no botão $index");
-  }
+  MytileWidget({required this.data});
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(onTap: botaoFoiTocado, items: const [
-      BottomNavigationBarItem(
-        label: "Cafés",
-        icon: Icon(Icons.coffee_outlined),
-      ),
-      BottomNavigationBarItem(
-          label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
-      BottomNavigationBarItem(label: "Nações", icon: Icon(Icons.flag_outlined))
-    ]);
-  }
-}
-
-class DataBodyWidget extends StatelessWidget {
-  List objects;
-  DataBodyWidget({this.objects = const []});
-
-  @override
-  Widget build(BuildContext context) {
-    var columnNames = ["Nome", "Estilo", "IBU"],
-        propertyNames = ["name", "style", "ibu"];
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: DataTable(
-        columns: columnNames
-            .map((name) => DataColumn(
-                    label: Expanded(
-                        child: Text(name,
-                            style: TextStyle(fontStyle: FontStyle.italic)))))
-            .toList(),
-        rows: objects
-            .map((obj) => DataRow(
-                cells: propertyNames
-                    .map((propName) => DataCell(Text(obj[propName])))
-                    .toList()))
-            .toList(),
-      ),
+    return ListView.builder(
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        var item = data[index];
+        return ListTile(
+          leading: Icon(Icons.local_drink_outlined),
+          title: Text(item["name"] ?? "Sem nome"),
+          subtitle: Text("Estilo: ${item["style"]} | IBU: ${item["ibu"]}"),
+        );
+      },
     );
   }
 }
