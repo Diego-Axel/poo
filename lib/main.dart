@@ -16,7 +16,7 @@ class ReceitasApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Receitas POOL',
+      title: 'Receitas POO UNIDADE 01',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
