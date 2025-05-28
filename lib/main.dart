@@ -1,172 +1,80 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-
-
-
-var dataObjects = [];
-
-
+import 'recipes/recipe01.dart';
+import 'recipes/recipe02.dart';
+import 'recipes/recipe03.dart';
+import 'recipes/recipe04.dart';
+import 'recipes/recipe05.dart';
+import 'recipes/recipe06.dart';
 
 void main() {
-
-  MyApp app = MyApp();
-
-  runApp(app);
-
+  runApp(const ReceitasApp());
 }
 
-
-
-class MyApp extends StatelessWidget {
-
-
+class ReceitasApp extends StatelessWidget {
+  const ReceitasApp({Key? key}) : super(key: key);
 
   @override
-
   Widget build(BuildContext context) {
-
     return MaterialApp(
-
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
-
-      debugShowCheckedModeBanner:false,
-
-      home: Scaffold(
-
-        appBar: AppBar( 
-
-          title: const Text("Dicas"),
-
-          ),
-
-        body: DataTableWidget(jsonObjects:dataObjects),
-
-        bottomNavigationBar: NewNavBar(),
-
-      ));
-
+      title: 'Receitas POO UNIDADE 01',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: const HomePage(),
+    );
   }
-
-
-
 }
 
-
-
-
-
-class NewNavBar extends HookWidget {
-
-  NewNavBar();
-
-
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-
   Widget build(BuildContext context) {
-
-    var state = useState(1);
-
-    return BottomNavigationBar(
-
-      onTap: (index){
-
-        state.value = index;
-
-      }, 
-
-      currentIndex: state.value,
-
-      items: const [
-
-        BottomNavigationBarItem(
-
-          label: "Cafés",
-
-          icon: Icon(Icons.coffee_outlined),
-
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Aluno: Diêgo Axel Bernardo Santos Rodrigues'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (int i = 1; i <= 6; i++)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => _getRecipePage(i),
+                      ),
+                    );
+                  },
+                  child: Text('Receita ${i.toString().padLeft(2, '0')}'),
+                ),
+              ),
+          ],
         ),
-
-
-
-        BottomNavigationBarItem(
-
-            label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
-
-
-
-        BottomNavigationBarItem(label: "Nações", icon: Icon(Icons.flag_outlined))
-
-      ]);
-
-
-
+      ),
+    );
   }
 
-
-
-}
-
-
-
-
-
-
-
-class DataTableWidget extends StatelessWidget {
-
-
-
-  final List jsonObjects;
-
-  final List<String> columnNames;
-
-  final List<String> propertyNames;
-
-
-
-  DataTableWidget( {this.jsonObjects = const [], this.columnNames = const ["Nome","Estilo","IBU"], this.propertyNames= const ["name", "style", "ibu"]});
-
-
-
-  @override
-
-  Widget build(BuildContext context) {
-
-    return DataTable(
-
-      columns: columnNames.map( 
-
-                (name) => DataColumn(
-
-                  label: Expanded(
-
-                    child: Text(name, style: TextStyle(fontStyle: FontStyle.italic))
-
-                  )
-
-                )
-
-              ).toList()       
-
-      ,
-
-      rows: jsonObjects.map( 
-
-        (obj) => DataRow(
-
-            cells: propertyNames.map(
-
-              (propName) => DataCell(Text(obj[propName]))
-
-            ).toList()
-
-          )
-
-        ).toList());
-
+  Widget _getRecipePage(int index) {
+    switch (index) {
+      case 1:
+        return const Recipe01();
+      case 2:
+        return const Recipe02();
+      case 3:
+        return const Recipe03();
+      case 4:
+        return const Recipe04();
+      case 5:
+        return const Recipe05();
+      case 6:
+        return const Recipe06();
+      default:
+        return const Scaffold();
+    }
   }
-
-
-
 }
