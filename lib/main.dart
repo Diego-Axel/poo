@@ -1,11 +1,60 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_hooks/flutter_hooks.dart';
 
+class DataService{
+
+  final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
+
+  
+
+  void carregar(index){
+
+    if (index == 1) carregarCervejas();
+
+  }
 
 
-var dataObjects = [];
 
+  void carregarCervejas(){
 
+    tableStateNotifier.value = [{
+
+            "name": "La Fin Du Monde",
+
+            "style": "Bock",
+
+            "ibu": "65"
+
+            },
+
+            {
+
+            "name": "Sapporo Premiume",
+
+            "style": "Sour Ale",
+
+            "ibu": "54"
+
+            },
+
+            {
+
+            "name": "Duvel", 
+
+            "style": "Pilsner", 
+
+            "ibu": "82"
+
+            }
+
+          ];
+
+    }
+
+}
+
+final dataService = DataService();
 
 void main() {
 
@@ -17,47 +66,19 @@ void main() {
 
 
 
-class MyApp extends StatelessWidget {
-
-
-
-  @override
-
-  Widget build(BuildContext context) {
-
-    return MaterialApp(
-
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
-
-      debugShowCheckedModeBanner:false,
-
-      home: Scaffold(
-
-        appBar: AppBar( 
-
-          title: const Text("Dicas"),
-
-          ),
-
-        body: DataTableWidget(jsonObjects:dataObjects),
-
-        bottomNavigationBar: NewNavBar(),
-
-      ));
-
-  }
-
-
-
-}
-
-
-
-
-
 class NewNavBar extends HookWidget {
 
-  NewNavBar();
+  var itemSelectedCallback; //esse atributo será uma função
+
+
+
+  NewNavBar({this.itemSelectedCallback}){
+
+    itemSelectedCallback ??= (){} ;
+
+  } 
+
+    
 
 
 
@@ -72,6 +93,10 @@ class NewNavBar extends HookWidget {
       onTap: (index){
 
         state.value = index;
+
+        itemSelectedCallback();
+
+        //carregarCervejas();        
 
       }, 
 
@@ -108,6 +133,64 @@ class NewNavBar extends HookWidget {
 }
 
 
+
+
+
+class MyApp extends StatelessWidget {
+
+
+
+  @override
+
+  Widget build(BuildContext context) {
+
+    return MaterialApp(
+
+      theme: ThemeData(primarySwatch: Colors.deepPurple),
+
+      debugShowCheckedModeBanner:false,
+
+      home: Scaffold(
+
+        appBar: AppBar( 
+
+          title: const Text("Dicas"),
+
+          ),
+
+        body: ValueListenableBuilder(
+
+          valueListenable: dataService.tableStateNotifier,
+
+          builder:(_, value, __){
+
+            return DataTableWidget(
+
+              jsonObjects:value, 
+
+              propertyNames: ["name","style","ibu"], 
+
+              columnNames: ["Nome", "Estilo", "IBU"]
+
+            );
+
+          }
+
+        )
+
+        
+
+        ,
+
+        bottomNavigationBar: NewNavBar(itemSelectedCallback: dataService.carregar),
+
+      ));
+
+  }
+
+
+
+}
 
 
 
