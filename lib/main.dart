@@ -1,255 +1,125 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class DataService{
-
+class DataService {
   final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
 
-  
-
-  void carregar(index){
-
-    if (index == 1) carregarCervejas();
-
+  void carregar(index) {
+    if (index == 0) carregarCafes();
+    else if (index == 1) carregarCervejas();
+    else if (index == 2) carregarNacoes();
   }
 
+  void carregarCervejas() {
+    tableStateNotifier.value = [
+      {"name": "La Fin Du Monde", "style": "Bock", "ibu": "65"},
+      {"name": "Sapporo Premiume", "style": "Sour Ale", "ibu": "54"},
+      {"name": "Duvel", "style": "Pilsner", "ibu": "82"}
+    ];
+  }
 
+  void carregarCafes() {
+    tableStateNotifier.value = [
+      {"name": "Café do Cerrado", "style": "Arábica", "ibu": "35"},
+      {"name": "Blue Mountain", "style": "Gourmet", "ibu": "20"},
+      {"name": "Kopi Luwak", "style": "Exótico", "ibu": "25"}
+    ];
+  }
 
-  void carregarCervejas(){
-
-    tableStateNotifier.value = [{
-
-            "name": "La Fin Du Monde",
-
-            "style": "Bock",
-
-            "ibu": "65"
-
-            },
-
-            {
-
-            "name": "Sapporo Premiume",
-
-            "style": "Sour Ale",
-
-            "ibu": "54"
-
-            },
-
-            {
-
-            "name": "Duvel", 
-
-            "style": "Pilsner", 
-
-            "ibu": "82"
-
-            }
-
-          ];
-
-    }
-
+  void carregarNacoes() {
+    tableStateNotifier.value = [
+      {"name": "Brasil", "style": "República", "ibu": "210"},
+      {"name": "Japão", "style": "Monarquia Constitucional", "ibu": "125"},
+      {"name": "Canadá", "style": "Monarquia Parlamentar", "ibu": "38"}
+    ];
+  }
 }
 
 final dataService = DataService();
 
 void main() {
-
   MyApp app = MyApp();
-
   runApp(app);
-
 }
 
-
-
 class NewNavBar extends HookWidget {
+  var itemSelectedCallback;
 
-  var itemSelectedCallback; //esse atributo será uma função
-
-
-
-  NewNavBar({this.itemSelectedCallback}){
-
-    itemSelectedCallback ??= (){} ;
-
-  } 
-
-    
-
-
+  NewNavBar({this.itemSelectedCallback}) {
+    itemSelectedCallback ??= () {};
+  }
 
   @override
-
   Widget build(BuildContext context) {
-
     var state = useState(1);
 
     return BottomNavigationBar(
-
-      onTap: (index){
-
-        state.value = index;
-
-        itemSelectedCallback();
-
-        //carregarCervejas();        
-
-      }, 
-
-      currentIndex: state.value,
-
-      items: const [
-
-        BottomNavigationBarItem(
-
-          label: "Cafés",
-
-          icon: Icon(Icons.coffee_outlined),
-
-        ),
-
-
-
-        BottomNavigationBarItem(
-
-            label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
-
-
-
-        BottomNavigationBarItem(label: "Nações", icon: Icon(Icons.flag_outlined))
-
-      ]);
-
-
-
+        onTap: (index) {
+          state.value = index;
+          itemSelectedCallback(index);
+        },
+        currentIndex: state.value,
+        items: const [
+          BottomNavigationBarItem(
+            label: "Cafés",
+            icon: Icon(Icons.coffee_outlined),
+          ),
+          BottomNavigationBarItem(
+              label: "Cervejas", icon: Icon(Icons.local_drink_outlined)),
+          BottomNavigationBarItem(
+              label: "Nações", icon: Icon(Icons.flag_outlined))
+        ]);
   }
-
-
-
 }
-
-
-
-
 
 class MyApp extends StatelessWidget {
-
-
-
   @override
-
   Widget build(BuildContext context) {
-
     return MaterialApp(
-
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
-
-      debugShowCheckedModeBanner:false,
-
-      home: Scaffold(
-
-        appBar: AppBar( 
-
-          title: const Text("Dicas"),
-
+        theme: ThemeData(primarySwatch: Colors.deepPurple),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text("Dicas"),
           ),
-
-        body: ValueListenableBuilder(
-
-          valueListenable: dataService.tableStateNotifier,
-
-          builder:(_, value, __){
-
-            return DataTableWidget(
-
-              jsonObjects:value, 
-
-              propertyNames: ["name","style","ibu"], 
-
-              columnNames: ["Nome", "Estilo", "IBU"]
-
-            );
-
-          }
-
-        )
-
-        
-
-        ,
-
-        bottomNavigationBar: NewNavBar(itemSelectedCallback: dataService.carregar),
-
-      ));
-
+          body: ValueListenableBuilder(
+              valueListenable: dataService.tableStateNotifier,
+              builder: (_, value, __) {
+                return DataTableWidget(
+                    jsonObjects: value,
+                    propertyNames: ["name", "style", "ibu"],
+                    columnNames: ["Nome", "Estilo", "IBU"]);
+              }),
+          bottomNavigationBar:
+              NewNavBar(itemSelectedCallback: dataService.carregar),
+        ));
   }
-
-
-
 }
 
-
-
-
-
 class DataTableWidget extends StatelessWidget {
-
-
-
   final List jsonObjects;
-
   final List<String> columnNames;
-
   final List<String> propertyNames;
 
-
-
-  DataTableWidget( {this.jsonObjects = const [], this.columnNames = const ["Nome","Estilo","IBU"], this.propertyNames= const ["name", "style", "ibu"]});
-
-
+  DataTableWidget(
+      {this.jsonObjects = const [],
+      this.columnNames = const ["Nome", "Estilo", "IBU"],
+      this.propertyNames = const ["name", "style", "ibu"]});
 
   @override
-
   Widget build(BuildContext context) {
-
     return DataTable(
-
-      columns: columnNames.map( 
-
-                (name) => DataColumn(
-
-                  label: Expanded(
-
-                    child: Text(name, style: TextStyle(fontStyle: FontStyle.italic))
-
-                  )
-
-                )
-
-              ).toList()       
-
-      ,
-
-      rows: jsonObjects.map( 
-
-        (obj) => DataRow(
-
-            cells: propertyNames.map(
-
-              (propName) => DataCell(Text(obj[propName]))
-
-            ).toList()
-
-          )
-
-        ).toList());
-
+        columns: columnNames
+            .map((name) => DataColumn(
+                    label: Expanded(
+                        child: Text(name,
+                            style: TextStyle(fontStyle: FontStyle.italic)))))
+            .toList(),
+        rows: jsonObjects
+            .map((obj) => DataRow(
+                    cells: propertyNames
+                        .map((propName) => DataCell(Text(obj[propName])))
+                        .toList()))
+            .toList());
   }
-
-
-
 }
