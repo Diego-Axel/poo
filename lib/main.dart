@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class DataService {
-  final ValueNotifier<List> tableStateNotifier = new ValueNotifier([]);
+  final ValueNotifier<List> tableStateNotifier = ValueNotifier([]);
+
+  final Map<int, Function> carregadores = {};
+
+  DataService() {
+    carregadores[0] = carregarCafes;
+    carregadores[1] = carregarCervejas;
+    carregadores[2] = carregarNacoes;
+  }
 
   void carregar(index) {
-    if (index == 0) carregarCafes();
-    else if (index == 1) carregarCervejas();
-    else if (index == 2) carregarNacoes();
+    carregadores[index]?.call();
   }
 
   void carregarCervejas() {
@@ -46,7 +52,7 @@ class NewNavBar extends HookWidget {
   var itemSelectedCallback;
 
   NewNavBar({this.itemSelectedCallback}) {
-    itemSelectedCallback ??= () {};
+    itemSelectedCallback ??= (_) {};
   }
 
   @override
