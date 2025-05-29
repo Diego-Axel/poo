@@ -53,6 +53,11 @@ class HomePage extends StatelessWidget {
                   child: Text('Receita ${i.toString().padLeft(2, '0')}'),
                 ),
               ),
+            const SizedBox(height: 40),
+            const Text(
+              'GitHub: https://github.com/Diego-Axel',
+              style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+            ),
           ],
         ),
       ),
