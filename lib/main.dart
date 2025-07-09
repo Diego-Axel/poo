@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
+
 import 'package:flutter_hooks/flutter_hooks.dart';
+
 import 'package:http/http.dart' as http;
+
+import 'dart:convert';
 
 
 
@@ -13,15 +16,31 @@ class DataService{
 
   void carregar(index){
 
-    if (index == 1) carregarCervejas();
+    final funcoes = [carregarCafes, carregarCervejas, carregarNacoes];
+
+    funcoes[index]();
+
+  }
+
+
+
+  void carregarCafes(){
+
+    return;
+
+  }
+
+
+
+  void carregarNacoes(){
+
+    return;
 
   }
 
 
 
   Future<void> carregarCervejas() async{
-
-
 
     var beersUri = Uri(
 
@@ -33,7 +52,7 @@ class DataService{
 
       queryParameters: {'size': '5'});
 
-  
+
 
     var jsonString = await http.read(beersUri);
 
