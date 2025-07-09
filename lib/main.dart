@@ -7,8 +7,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 
+
 enum TableStatus{idle,loading,ready,error}
+
+
+
 class DataService{
+
+  
 
   final ValueNotifier<Map<String,dynamic>> tableStateNotifier 
 
@@ -42,7 +48,37 @@ class DataService{
 
   void carregarCafes(){
 
-    return;
+    var coffeesUri = Uri(
+
+      scheme: 'https',
+
+      host: 'random-data-api.com',
+
+      path: 'api/coffee/random_coffee',
+
+      queryParameters: {'size': '10'});
+
+
+
+    http.read(coffeesUri).then( (jsonString){
+
+      var coffeesJson = jsonDecode(jsonString);
+
+      tableStateNotifier.value = {
+
+        'status': TableStatus.ready,
+
+        'dataObjects': coffeesJson,
+
+        'propertyNames': ["blend_name","origin","variety"],
+
+        'columnNames': ["Nome", "Origem", "Tipo"]
+
+      };
+
+    });
+
+    
 
   }
 
@@ -50,7 +86,35 @@ class DataService{
 
   void carregarNacoes(){
 
-    return;
+    var nationsUri = Uri(
+
+      scheme: 'https',
+
+      host: 'random-data-api.com',
+
+      path: 'api/nation/random_nation',
+
+      queryParameters: {'size': '10'});
+
+
+
+    http.read(nationsUri).then( (jsonString){
+
+      var nationsJson = jsonDecode(jsonString);
+
+      tableStateNotifier.value = {
+
+        'status': TableStatus.ready,
+
+        'dataObjects': nationsJson,
+
+        'propertyNames': ["nationality","capital","language","national_sport"],
+
+        'columnNames': ["Nome", "Capital", "Idioma","Esporte"]
+
+      };
+
+    });
 
   }
 
@@ -66,7 +130,7 @@ class DataService{
 
       path: 'api/beer/random_beer',
 
-      queryParameters: {'size': '5'});
+      queryParameters: {'size': '10'});
 
 
 
@@ -80,7 +144,9 @@ class DataService{
 
         'dataObjects': beersJson,
 
-        'propertyNames': ["name","style","ibu"]
+        'propertyNames': ["name","style","ibu"],
+
+        'columnNames': ["Nome", "Estilo", "IBU"]
 
       };
 
@@ -120,6 +186,8 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
 
+      
+
       theme: ThemeData(primarySwatch: Colors.deepPurple),
 
       debugShowCheckedModeBanner:false,
@@ -142,21 +210,21 @@ class MyApp extends StatelessWidget {
 
               case TableStatus.idle: 
 
-                return Text("Toque algum botão");
+                return Center(child: Text("Toque algum botão, abaixo..."));
 
               case TableStatus.loading:
 
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
 
               case TableStatus.ready: 
 
-                return DataTableWidget(
+                return ListWidget(
 
-                  jsonObjects:value['dataObjects'], 
+                  jsonObjects: value['dataObjects'], 
 
-                  propertyNames: value['propertyNames'], 
+                  propertyNames: value['propertyNames'] 
 
-                  columnNames: ["Nome", "Estilo", "IBU"]
+                  
 
                 );
 
@@ -179,6 +247,8 @@ class MyApp extends StatelessWidget {
       ));
 
   }
+
+
 
 }
 
@@ -254,59 +324,105 @@ class NewNavBar extends HookWidget {
 
 
 
-
-
-class DataTableWidget extends StatelessWidget {
+class ListWidget extends StatelessWidget {
 
 
 
   final List jsonObjects;
 
-  final List<String> columnNames;
-
   final List<String> propertyNames;
 
 
 
-  DataTableWidget( {this.jsonObjects = const [], this.columnNames = const ["Nome","Estilo","IBU"], this.propertyNames= const ["name", "style", "ibu"]});
+  ListWidget( {this.jsonObjects = const [], this.propertyNames= const ["name", "style", "ibu"]});
 
-
+  
 
   @override
 
   Widget build(BuildContext context) {
 
-    return DataTable(
+    
 
-      columns: columnNames.map( 
+    return ListView.separated(    
 
-                (name) => DataColumn(
+      padding: EdgeInsets.all(10),
 
-                  label: Expanded(
+      separatorBuilder: (_,__) => Divider(
 
-                    child: Text(name, style: TextStyle(fontStyle: FontStyle.italic))
+            height: 5,
 
-                  )
+            thickness: 2,
 
-                )
+            indent: 10,
 
-              ).toList()       
+            endIndent: 10,
 
-      ,
+            color: Theme.of(context).primaryColor,
 
-      rows: jsonObjects.map( 
+          ),
 
-        (obj) => DataRow(
+      itemCount: jsonObjects.length,
 
-            cells: propertyNames.map(
+      itemBuilder: (_, index){
 
-              (propName) => DataCell(Text(obj[propName]))
+        var title = jsonObjects[index][propertyNames[0]];
 
-            ).toList()
+        var content = propertyNames
+
+                        .sublist(1)
+
+                        .map( (prop) => jsonObjects[index][prop] )
+
+                        .join(" - ");
+
+        
+
+        return Card(     
+
+          shadowColor: Theme.of(context).primaryColor,     
+
+          child: Column( 
+
+            children: [
+
+              SizedBox(height: 10),
+
+              //a primeira propriedade vai em negrito
+
+              Text(                    
+
+                "${title}\n",
+
+                 style: TextStyle(fontWeight: FontWeight.bold)
+
+              ),
+
+              
+
+              //as demais vão normais
+
+              Text(content),
+
+              SizedBox(height: 10)
+
+            ]
 
           )
 
-        ).toList());
+        ); 
+
+          
+
+      },
+
+      
+
+    );
+
+    
+
+    
 
   }
 
