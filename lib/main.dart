@@ -9,7 +9,7 @@ import 'dart:convert';
 
 
 enum TableStatus{idle,loading,ready,error}
-
+enum ItemType{beer, coffee, nation, none}
 
 
 class DataService{
@@ -22,7 +22,9 @@ class DataService{
 
                               'status':TableStatus.idle,
 
-                              'dataObjects':[]
+                              'dataObjects':[],
+
+                              'itemType': ItemType.none
 
                             });
 
@@ -33,6 +35,8 @@ class DataService{
     final funcoes = [carregarCafes, carregarCervejas, carregarNacoes];
 
     tableStateNotifier.value = {
+
+      'itemType': ItemType.none,
 
       'status': TableStatus.loading,
 
@@ -47,6 +51,10 @@ class DataService{
 
 
   void carregarCafes(){
+
+    //ignorar solicitação se uma requisição já estiver em curso
+
+    if (tableStateNotifier.value['status'] == TableStatus.loading) return;
 
     var coffeesUri = Uri(
 
@@ -64,7 +72,13 @@ class DataService{
 
       var coffeesJson = jsonDecode(jsonString);
 
+      //se já houver cafés no estado da tabela...
+
+      if (tableStateNotifier.value['status'] != TableStatus.loading) coffeesJson = [...tableStateNotifier.value['dataObjects'], ...coffeesJson];
+
       tableStateNotifier.value = {
+
+        'itemType': ItemType.nation,
 
         'status': TableStatus.ready,
 
@@ -85,6 +99,9 @@ class DataService{
 
 
   void carregarNacoes(){
+    //ignorar solicitação se uma requisição já estiver em curso
+
+    if (tableStateNotifier.value['status'] == TableStatus.loading) return;
 
     var nationsUri = Uri(
 
@@ -102,7 +119,13 @@ class DataService{
 
       var nationsJson = jsonDecode(jsonString);
 
+      //se já houver nações no estado da tabela...
+
+      if (tableStateNotifier.value['status'] != TableStatus.loading) nationsJson = [...tableStateNotifier.value['dataObjects'], ...nationsJson];
+
       tableStateNotifier.value = {
+
+        'itemType': ItemType.beer,
 
         'status': TableStatus.ready,
 
@@ -121,6 +144,9 @@ class DataService{
 
 
   void carregarCervejas(){
+    //ignorar solicitação se uma requisição já estiver em curso
+
+    if (tableStateNotifier.value['status'] == TableStatus.loading) return;
 
     var beersUri = Uri(
 
@@ -137,6 +163,10 @@ class DataService{
     http.read(beersUri).then( (jsonString){
 
       var beersJson = jsonDecode(jsonString);
+
+      //se já houver cervejas no estado da tabela...
+
+      if (tableStateNotifier.value['status'] != TableStatus.loading) beersJson = [...tableStateNotifier.value['dataObjects'], ...beersJson];
 
       tableStateNotifier.value = {
 
@@ -177,6 +207,15 @@ void main() {
 
 
 class MyApp extends StatelessWidget {
+  final functionsMap = {
+
+    ItemType.beer: dataService.carregarCervejas,
+
+    ItemType.coffee: dataService.carregarCafes,
+
+    ItemType.nation: dataService.carregarNacoes
+
+  };
 
 
 
@@ -222,7 +261,9 @@ class MyApp extends StatelessWidget {
 
                   jsonObjects: value['dataObjects'], 
 
-                  propertyNames: value['propertyNames'] 
+                  propertyNames: value['propertyNames'],
+
+                  scrollEndedCallback: functionsMap[value['itemType']],
 
                   
 
@@ -324,7 +365,9 @@ class NewNavBar extends HookWidget {
 
 
 
-class ListWidget extends StatelessWidget {
+class ListWidget extends HookWidget {
+
+  final dynamic _scrollEndedCallback;
 
 
 
@@ -334,7 +377,11 @@ class ListWidget extends StatelessWidget {
 
 
 
-  ListWidget( {this.jsonObjects = const [], this.propertyNames= const ["name", "style", "ibu"]});
+  ListWidget( {this.jsonObjects = const [], this.propertyNames= const [], void Function()? scrollEndedCallback }):
+
+    _scrollEndedCallback = scrollEndedCallback ?? false;
+
+    
 
   
 
@@ -342,9 +389,43 @@ class ListWidget extends StatelessWidget {
 
   Widget build(BuildContext context) {
 
+    var controller = useScrollController();
+
+    useEffect(
+
+      (){
+
+        controller.addListener(
+
+          (){
+
+            if (controller.position.pixels == controller.position.maxScrollExtent){
+
+              print('end reached');
+
+              if (_scrollEndedCallback is Function)
+
+                _scrollEndedCallback();
+
+            }
+
+              
+
+          },
+
+        );
+
+      },[controller]
+
+    );
+
+
+
     
 
     return ListView.separated(    
+
+      controller: controller,
 
       padding: EdgeInsets.all(10),
 
@@ -362,9 +443,15 @@ class ListWidget extends StatelessWidget {
 
           ),
 
-      itemCount: jsonObjects.length,
+      itemCount: jsonObjects.length+1,
 
       itemBuilder: (_, index){
+
+        if (index==jsonObjects.length)
+
+          return Center(child: LinearProgressIndicator());
+
+        
 
         var title = jsonObjects[index][propertyNames[0]];
 
@@ -376,7 +463,7 @@ class ListWidget extends StatelessWidget {
 
                         .join(" - ");
 
-        
+
 
         return Card(     
 
